@@ -110,3 +110,17 @@ test(`Events work when you pass in your own object`, t => {
 
 	t.end()
 })
+
+test(`Types`, t => {
+	const emitter = createEmitter()
+
+	t.throws(() => emitter.on(), /string/)
+	t.throws(() => emitter.on('wat'), /function/)
+
+	t.throws(() => emitter.once(), /string/)
+	t.throws(() => emitter.once('wat'), /function/)
+
+	t.throws(() => emitter.emit(), /string/)
+
+	t.end()
+})
