@@ -9,7 +9,7 @@ const assertType = (name, value, expectedType) => {
 }
 
 module.exports = function createEmitter(emitter = Object.create(null)) {
-	const eventsToListeners = keyMaster(() => keyMaster())
+	const eventsToListeners = keyMaster(() => Object.create(null))
 
 	emitter.on = (event, listener) => {
 		assertType('event', event, 'string')
@@ -17,9 +17,11 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 
 		const id = Math.random().toString().slice(2)
 		const listeners = eventsToListeners.get(event)
-		listeners.set(id, listener)
+		listeners[id] = listener
 
-		return () => listeners.remove(id)
+		return () => {
+			delete listeners[id]
+		}
 	}
 
 	emitter.once = (event, listener) => {
@@ -38,7 +40,7 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 		assertType('event', event, 'string')
 
 		const listeners = eventsToListeners.get(event)
-		getPropertyValuesInOrder(listeners.getUnderlyingDataStructure()).forEach(listener => listener(...args))
+		getPropertyValuesInOrder(listeners).forEach(listener => listener(...args))
 	}
 
 	return emitter
