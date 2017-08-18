@@ -13,7 +13,7 @@ npm i better-emitter
 ```
 
 ```
-const createEmitter = require('./')
+const createEmitter = require('better-emitter')
 ```
 
 # API
