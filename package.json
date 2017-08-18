@@ -4,7 +4,7 @@
   "description": "A very simple event emitter with a better API than all the others",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js && jsmd readme.md && echo \"Readme passed!\""
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,12 @@
   "bugs": {
     "url": "https://github.com/TehShrike/better-emitter/issues"
   },
-  "homepage": "https://github.com/TehShrike/better-emitter#readme"
+  "homepage": "https://github.com/TehShrike/better-emitter#readme",
+  "devDependencies": {
+    "jsmd": "0.3.1",
+    "tape": "4.8.0"
+  },
+  "dependencies": {
+    "key-master": "3.1.0"
+  }
 }
