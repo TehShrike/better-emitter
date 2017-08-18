@@ -1,0 +1,29 @@
+{
+  "name": "better-emitter",
+  "version": "1.0.0",
+  "description": "A very simple event emitter with a better API than all the others",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TehShrike/better-emitter.git"
+  },
+  "keywords": [
+    "event",
+    "emitter",
+    "functional",
+    "fp",
+    "events",
+    "emit",
+    "tiny",
+    "simple"
+  ],
+  "author": "TehShrike",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/TehShrike/better-emitter/issues"
+  },
+  "homepage": "https://github.com/TehShrike/better-emitter#readme"
+}
