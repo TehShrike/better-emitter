@@ -15,7 +15,7 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 		assertType('event', event, 'string')
 		assertType('listener', listener, 'function')
 
-		const id = Math.random().toString().slice(2)
+		const id = Math.random().toString()
 		const listeners = eventsToListeners.get(event)
 		listeners[id] = listener
 
