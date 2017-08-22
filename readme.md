@@ -4,7 +4,7 @@ I don't like most event emitters because:
 
 1. If you want to unsubscribe, you have to hold on to your listener function so you can call `emitter.unsubscribe(event, listener)`.  `emitter.on` should just return an unsubscribe function.
 2. They use `this`, which means you can't pass around `on` or `emit` functions.
-3. They always return new objects, when I often want to make an existing object an emitter.
+3. They always return new objects, and I occasionally want to make an existing object an emitter.
 
 This library is better!  Also, pretty simple.  Check out the source code.
 
