@@ -1,1 +1,0 @@
-import betterEmitter, {Emitter} from './index';

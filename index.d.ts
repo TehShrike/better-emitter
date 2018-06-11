@@ -1,7 +1,7 @@
 type Listener = (...args) => void
 type Unlisten = () => void
 
-export interface Emitter {
+interface Emitter {
 	on(event: string, listener: Listener): Unlisten,
 	once(event: string, listener: Listener): Unlisten,
 	emit(event: string, ...args): void
@@ -9,4 +9,4 @@ export interface Emitter {
 
 declare function makeEmitter<Object>(object?: Object): Emitter & Object
 
-export default makeEmitter
+export = makeEmitter
