@@ -1,12 +1,12 @@
 A very simple event emitter with a better API than all the others.
 
-I don't like most event emitters because:
+It's better because:
 
-1. If you want to unsubscribe, you have to hold on to your listener function so you can call `emitter.unsubscribe(event, listener)`.  `emitter.on` should just return an unsubscribe function.
-2. They use `this`, which means you can't pass around `on` or `emit` functions.
-3. They always return new objects, and I occasionally want to make an existing object an emitter.
+1. `on` and `once` return an unsubscribe function
+2. It doesn't use `this`, which means you can pass around the `on` or `emit` functions
+3. It can take in any existing object and turn it into an emitter
 
-This library is better!  Also, pretty simple.  Check out the source code.
+Also, it's pretty simple.  Check out the source code.
 
 ```sh
 npm i better-emitter
