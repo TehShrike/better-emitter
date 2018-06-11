@@ -1,6 +1,6 @@
 {
   "name": "better-emitter",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A very simple event emitter with a better API than all the others",
   "main": "index.js",
   "scripts": {
