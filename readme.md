@@ -51,6 +51,10 @@ Just like the `on` function, except the listener is automatically unsubscribed a
 
 Calls all listeners of the given event string, with any arguments.
 
+## `emitter.removeAllListeners()`
+
+Unsubscribes all current event listeners.
+
 # License
 
 [WTFPL](http://wtfpl2.com/)
