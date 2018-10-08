@@ -4,7 +4,8 @@
   "description": "A very simple event emitter with a better API than all the others",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js && jsmd readme.md && echo \"Readme passed!\""
+		"test-ts": "tsc --noEmit sample.ts && ts-node sample.ts",
+    "test": "node test.js && jsmd readme.md && echo \"Readme passed!\" && npm run test-ts"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,9 @@
   "homepage": "https://github.com/TehShrike/better-emitter#readme",
   "devDependencies": {
     "jsmd": "0.3.1",
-    "tape": "4.8.0"
+    "tape": "4.8.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.1"
   },
   "dependencies": {
     "key-master": "4.0.0"
