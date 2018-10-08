@@ -8,6 +8,7 @@ export interface Emitter<EventName extends string, EventArgument> {
 	removeAllListeners(): void,
 }
 
-declare function makeEmitter<Object, EventName extends string, EventArgument>(object?: Object): Emitter<EventName, EventArgument> & Object
+declare function createEmitter<InputObject, EventName extends string, EventArgument>(inputObject: InputObject): Emitter<EventName, EventArgument> & InputObject
+declare function createEmitter<EventName extends string, EventArgument>(): Emitter<EventName, EventArgument>
 
-export default makeEmitter
+export default createEmitter

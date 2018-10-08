@@ -1,30 +1,32 @@
-import createEmitter, { Emitter } from './'
+import createEmitter from './'
 
-interface CoolThing {
+const stringTakingFunction = (...strings: string[]) => {}
+
+const backwardCompatibleEmitter = createEmitter()
+backwardCompatibleEmitter.on('whatever', () => {})
+backwardCompatibleEmitter.emit('whatever')
+
+const anyEmitter = createEmitter<any, any>()
+anyEmitter.on('whatever', stringTakingFunction)
+anyEmitter.emit('whatever', 123)
+
+const ordinaryEmitter = createEmitter<'foo' | 'baz', string>()
+ordinaryEmitter.on('foo', () => {})
+ordinaryEmitter.on('baz', () => {})
+ordinaryEmitter.on('foo', stringTakingFunction)
+ordinaryEmitter.on('baz', stringTakingFunction)
+ordinaryEmitter.emit('foo', 'football')
+ordinaryEmitter.emit('baz', 'bazketball', 'bazillion')
+ordinaryEmitter.removeAllListeners()
+
+interface CoolObject {
 	degrees: number
 }
 
 type AmazingEvent = 'shock' | 'awe' | 'wonder' | 'amazement'
 type AmazingArgument = string | number
-type AmazingThing = CoolThing & Emitter<AmazingEvent, AmazingArgument>
 
-const coolThing : CoolThing = {
-	degrees: 60
-}
-
-const ordinaryThing : Emitter<'foo' | 'baz', string> = createEmitter()
-
-const amazingThing : AmazingThing = createEmitter(coolThing)
-
-const stringTakingFunction = (...strings: string[]) => {}
-
-ordinaryThing.emit('foo', 'football')
-ordinaryThing.emit('baz', 'bazketball', 'bazillion')
-ordinaryThing.on('foo', () => {})
-ordinaryThing.on('baz', () => {})
-ordinaryThing.on('foo', stringTakingFunction)
-ordinaryThing.on('baz', stringTakingFunction)
-ordinaryThing.removeAllListeners()
-
-amazingThing.on('wonder', stringTakingFunction)
-amazingThing.removeAllListeners()
+const amazingEmitter = createEmitter <CoolObject, AmazingEvent, AmazingArgument> ({ degrees: 60 })
+amazingEmitter.on('wonder', stringTakingFunction)
+amazingEmitter.emit('wonder', 'ful')
+amazingEmitter.removeAllListeners()
