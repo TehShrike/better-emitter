@@ -1,13 +1,22 @@
-type Listener = (...args) => void
 type Unlisten = () => void
+type Listener<EventArgument> = (...args: EventArgument[]) => void
 
-export interface Emitter {
-	on(event: string, listener: Listener): Unlisten,
-	once(event: string, listener: Listener): Unlisten,
-	emit(event: string, ...args): void,
-	removeAllListeners(): void,
+interface Listen<EventMap> {
+	<EventName extends keyof EventMap>(eventName: EventName, listener: Listener<EventMap[EventName]>) : Unlisten,
 }
 
-declare function makeEmitter<Object>(object?: Object): Emitter & Object
+interface Emit<EventMap> {
+  <EventName extends keyof EventMap>(eventName: EventName, ...eventArgs: EventMap[EventName][]) : void
+}
 
-export default makeEmitter
+export interface Emitter<EventMap> {
+	on: Listen<EventMap>,
+	once: Listen<EventMap>,
+	emit: Emit<EventMap>,
+	removeAllListeners(): void
+}
+
+declare function createEmitter<EventMap>(): Emitter<EventMap>
+declare function createEmitter<EventMap, InputObject>(inputObject): Emitter<EventMap> & InputObject
+
+export default createEmitter
