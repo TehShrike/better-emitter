@@ -12,12 +12,13 @@ const freshMap = () => keyMaster(() => Object.create(null))
 
 module.exports = function createEmitter(emitter = Object.create(null)) {
 	let eventsToListeners = freshMap()
+	let nextId = 0
 
 	emitter.on = (event, listener) => {
 		assertType(`event`, event, `string`)
 		assertType(`listener`, listener, `function`)
 
-		const id = Math.random().toString()
+		const id = (nextId++).toString()
 		const listeners = eventsToListeners.get(event)
 		listeners[id] = listener
 
