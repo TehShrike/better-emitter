@@ -24,6 +24,10 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 
 		return () => {
 			delete listeners[id]
+
+			if (Object.keys(listeners) === 0) {
+				eventsToListeners.delete(event)
+			}
 		}
 	}
 
