@@ -1,4 +1,4 @@
-type Listener = (...args) => void
+type Listener = (...args: any[]) => void
 type Unlisten = () => void
 
 interface Emitter {
