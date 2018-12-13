@@ -4,7 +4,7 @@ type Unlisten = () => void
 export interface Emitter {
 	on(event: string, listener: Listener): Unlisten,
 	once(event: string, listener: Listener): Unlisten,
-	emit(event: string, ...args): void,
+	emit(event: string, ...args: any[]): void,
 	removeAllListeners(): void,
 }
 
