@@ -1,6 +1,5 @@
 const keyMaster = require(`key-master`)
 
-const getPropertyValuesInOrder = o => Object.getOwnPropertyNames(o).map(key => o[key])
 const assertType = (name, value, expectedType) => {
 	const actualType = typeof value
 	if (actualType !== expectedType) {
@@ -8,7 +7,7 @@ const assertType = (name, value, expectedType) => {
 	}
 }
 
-const freshMap = () => keyMaster(() => Object.create(null))
+const freshMap = () => keyMaster(() => new Map())
 
 module.exports = function createEmitter(emitter = Object.create(null)) {
 	let eventsToListeners = freshMap()
@@ -20,12 +19,12 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 
 		const id = (nextId++).toString()
 		const listeners = eventsToListeners.get(event)
-		listeners[id] = listener
+		listeners.set(id, listener)
 
 		return () => {
-			delete listeners[id]
+			listeners.delete(id)
 
-			if (Object.keys(listeners) === 0) {
+			if (listeners.size === 0) {
 				eventsToListeners.delete(event)
 			}
 		}
@@ -47,7 +46,9 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 		assertType(`event`, event, `string`)
 
 		const listeners = eventsToListeners.get(event)
-		getPropertyValuesInOrder(listeners).forEach(listener => listener(...args))
+		for (const listener of listeners.values()) {
+			listener(...args)
+		}
 	}
 
 	emitter.removeAllListeners = () => {
