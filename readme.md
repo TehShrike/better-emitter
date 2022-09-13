@@ -25,12 +25,11 @@ const createEmitter = require('./')
 ```js
 const emitter = createEmitter()
 
-const unsubscribe = emitter.on('thing happened', (really, why) => {
+const unsubscribe = emitter.on('thing happened', (really) => {
 	really // => true
-	why // => 'I dunno'
 })
 
-emitter.emit('thing happened', true, 'I dunno')
+emitter.emit('thing happened', true)
 
 unsubscribe()
 ```
@@ -47,9 +46,9 @@ Adds an event listener function.  Returns an unsubscribe function that, when cal
 
 Just like the `on` function, except the listener is automatically unsubscribed after the first time the event is emitted.
 
-## `emitter.emit(eventString, [...args])`
+## `emitter.emit(eventString, [arg])`
 
-Calls all listeners of the given event string, with any arguments.
+Calls all listeners of the given event string, with one optional argument.
 
 ## `emitter.removeAllListeners()`
 

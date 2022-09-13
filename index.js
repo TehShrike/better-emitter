@@ -42,12 +42,12 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 		return unsubscribe
 	}
 
-	emitter.emit = (event, ...args) => {
+	emitter.emit = (event, arg) => {
 		assertType(`event`, event, `string`)
 
 		const listeners = eventsToListeners.get(event)
 		for (const listener of listeners.values()) {
-			listener(...args)
+			listener(arg)
 		}
 	}
 

@@ -7,19 +7,17 @@ test(`Events work (in order)`, t => {
 	let firstFired = false
 
 	emitter.on(`Shouldn't happen`, () => t.fail())
-	emitter.on(`wat`, (a, b) => {
+	emitter.on(`wat`, a => {
 		t.equal(a, `arg1`)
-		t.equal(b, `arg2`)
 		firstFired = true
 	})
-	emitter.on(`wat`, (a, b) => {
+	emitter.on(`wat`, a => {
 		t.equal(a, `arg1`)
-		t.equal(b, `arg2`)
 		t.ok(firstFired)
 		t.end()
 	})
 
-	emitter.emit(`wat`, `arg1`, `arg2`)
+	emitter.emit(`wat`, `arg1`)
 })
 
 test(`Events fire synchronously`, t => {
