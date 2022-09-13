@@ -127,3 +127,19 @@ test(`removeAllListeners`, t => {
 
 	t.end()
 })
+
+test(`stopPropagation`, t => {
+	const emitter = createEmitter()
+
+	emitter.on(`wat`, (_, { stopPropagation }) => {
+		stopPropagation()
+	})
+
+	emitter.on(`wat`, () => {
+		t.fail(`Should not be called because the first listener called stopPropagation`)
+	})
+
+	emitter.emit(`wat`)
+
+	t.end()
+})

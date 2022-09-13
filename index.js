@@ -31,8 +31,12 @@ module.exports = function createEmitter(emitter = Object.create(null)) {
 
 	emitter.emit = (event, arg) => {
 		const listeners = eventsToListeners.get(event)
+		let stoppedPropagation = false
+		const stopPropagation = () => stoppedPropagation = true
 		for (const listener of listeners.values()) {
-			listener(arg)
+			if (!stoppedPropagation) {
+				listener(arg, { stopPropagation })
+			}
 		}
 	}
 

@@ -25,8 +25,9 @@ const createEmitter = require('./')
 ```js
 const emitter = createEmitter()
 
-const unsubscribe = emitter.on('thing happened', (really) => {
+const unsubscribe = emitter.on('thing happened', (really, { stopPropagation }) => {
 	really // => true
+	typeof stopPropagation // => 'function'
 })
 
 emitter.emit('thing happened', true)
@@ -41,6 +42,8 @@ This is the function exported by the module.  It creates a new event emitter obj
 ## `unsubscribe = emitter.on(eventString, listenerFunction)`
 
 Adds an event listener function.  Returns an unsubscribe function that, when called, prevents the listener from firing any more.
+
+The listener function will be passed the optional argument that you passed into `emit`, as well as an object with a `stopPropagation` function that you can call to prevent any other listeners from getting the message.
 
 ## `unsubscribe = emitter.once(eventString, listenerFunction)`
 
