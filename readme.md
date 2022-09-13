@@ -35,7 +35,7 @@ emitter.emit('thing happened', true, 'I dunno')
 unsubscribe()
 ```
 
-## `emitter = createEmitter([emitter])`
+## `emitter = createEmitter([obj])`
 
 This is the function exported by the module.  It creates a new event emitter object.  You can also pass in any object you want, and event emitter functions will be added to it.
 
