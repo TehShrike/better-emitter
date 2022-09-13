@@ -7,19 +7,17 @@ test(`Events work (in order)`, t => {
 	let firstFired = false
 
 	emitter.on(`Shouldn't happen`, () => t.fail())
-	emitter.on(`wat`, (a, b) => {
+	emitter.on(`wat`, a => {
 		t.equal(a, `arg1`)
-		t.equal(b, `arg2`)
 		firstFired = true
 	})
-	emitter.on(`wat`, (a, b) => {
+	emitter.on(`wat`, a => {
 		t.equal(a, `arg1`)
-		t.equal(b, `arg2`)
 		t.ok(firstFired)
 		t.end()
 	})
 
-	emitter.emit(`wat`, `arg1`, `arg2`)
+	emitter.emit(`wat`, `arg1`)
 })
 
 test(`Events fire synchronously`, t => {
@@ -111,20 +109,6 @@ test(`Events work when you pass in your own object`, t => {
 	t.end()
 })
 
-test(`Types`, t => {
-	const emitter = createEmitter()
-
-	t.throws(() => emitter.on(), /string/)
-	t.throws(() => emitter.on(`wat`), /function/)
-
-	t.throws(() => emitter.once(), /string/)
-	t.throws(() => emitter.once(`wat`), /function/)
-
-	t.throws(() => emitter.emit(), /string/)
-
-	t.end()
-})
-
 test(`removeAllListeners`, t => {
 	const emitter = createEmitter()
 
@@ -140,6 +124,22 @@ test(`removeAllListeners`, t => {
 
 	emitter.emit(`wat`)
 	emitter.emit(`ok`)
+
+	t.end()
+})
+
+test(`stopPropagation`, t => {
+	const emitter = createEmitter()
+
+	emitter.on(`wat`, (_, { stopPropagation }) => {
+		stopPropagation()
+	})
+
+	emitter.on(`wat`, () => {
+		t.fail(`Should not be called because the first listener called stopPropagation`)
+	})
+
+	emitter.emit(`wat`)
 
 	t.end()
 })
