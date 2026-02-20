@@ -27,8 +27,7 @@
   },
   "homepage": "https://github.com/TehShrike/better-emitter#readme",
   "devDependencies": {
-    "jsmd": "^1.0.2",
-    "tape": "4.8.0"
+    "jsmd": "^1.0.2"
   },
   "dependencies": {
     "key-master": "4.0.0"

@@ -1,26 +1,26 @@
-const test = require(`tape`)
+const test = require(`node:test`)
+const assert = require(`node:assert`)
 const createEmitter = require(`./`)
 
-test(`Events work (in order)`, t => {
+test(`Events work (in order)`, () => {
 	const emitter = createEmitter()
 
 	let firstFired = false
 
-	emitter.on(`Shouldn't happen`, () => t.fail())
+	emitter.on(`Shouldn't happen`, () => assert.fail())
 	emitter.on(`wat`, a => {
-		t.equal(a, `arg1`)
+		assert.strictEqual(a, `arg1`)
 		firstFired = true
 	})
 	emitter.on(`wat`, a => {
-		t.equal(a, `arg1`)
-		t.ok(firstFired)
-		t.end()
+		assert.strictEqual(a, `arg1`)
+		assert.ok(firstFired)
 	})
 
 	emitter.emit(`wat`, `arg1`)
 })
 
-test(`Events fire synchronously`, t => {
+test(`Events fire synchronously`, () => {
 	const emitter = createEmitter()
 
 	let firstFired = false
@@ -30,12 +30,11 @@ test(`Events fire synchronously`, t => {
 
 	emitter.emit(`thingy`)
 
-	t.ok(firstFired)
-	t.ok(secondFired)
-	t.end()
+	assert.ok(firstFired)
+	assert.ok(secondFired)
 })
 
-test(`Unsubscribe works`, t => {
+test(`Unsubscribe works`, () => {
 	const emitter = createEmitter()
 
 	let firstFiredTimes = 0
@@ -54,13 +53,11 @@ test(`Unsubscribe works`, t => {
 	emitter.emit(`hmm`)
 	emitter.emit(`hmm`)
 
-	t.equal(firstFiredTimes, 1)
-	t.equal(secondFiredTimes, 3)
-
-	t.end()
+	assert.strictEqual(firstFiredTimes, 1)
+	assert.strictEqual(secondFiredTimes, 3)
 })
 
-test(`once`, t => {
+test(`once`, () => {
 	const emitter = createEmitter()
 
 	let firedTimes = 0
@@ -71,11 +68,10 @@ test(`once`, t => {
 	emitter.emit(`whatever`)
 	emitter.emit(`whatever`)
 
-	t.equal(firedTimes, 1)
-	t.end()
+	assert.strictEqual(firedTimes, 1)
 })
 
-test(`once's unsubscribe function`, t => {
+test(`once's unsubscribe function`, () => {
 	const emitter = createEmitter()
 
 	let firedTimes = 0
@@ -88,15 +84,14 @@ test(`once's unsubscribe function`, t => {
 	emitter.emit(`whatever`)
 	emitter.emit(`whatever`)
 
-	t.equal(firedTimes, 0)
-	t.end()
+	assert.strictEqual(firedTimes, 0)
 })
 
-test(`Events work when you pass in your own object`, t => {
+test(`Events work when you pass in your own object`, () => {
 	const inputObject = () => {}
 	const emitter = createEmitter(inputObject)
 
-	t.equal(emitter, inputObject)
+	assert.strictEqual(emitter, inputObject)
 
 	let firstFired = false
 	emitter.on(`wat`, () => {
@@ -104,31 +99,27 @@ test(`Events work when you pass in your own object`, t => {
 	})
 
 	emitter.emit(`wat`)
-	t.equal(firstFired, true)
-
-	t.end()
+	assert.strictEqual(firstFired, true)
 })
 
-test(`removeAllListeners`, t => {
+test(`removeAllListeners`, () => {
 	const emitter = createEmitter()
 
 	emitter.on(`wat`, () => {
-		t.fail(`wat events should not be called`)
+		assert.fail(`wat events should not be called`)
 	})
 
 	emitter.on(`ok`, () => {
-		t.fail(`ok events should not be called`)
+		assert.fail(`ok events should not be called`)
 	})
 
 	emitter.removeAllListeners()
 
 	emitter.emit(`wat`)
 	emitter.emit(`ok`)
-
-	t.end()
 })
 
-test(`stopPropagation`, t => {
+test(`stopPropagation`, () => {
 	const emitter = createEmitter()
 
 	emitter.on(`wat`, (_, { stopPropagation }) => {
@@ -136,10 +127,8 @@ test(`stopPropagation`, t => {
 	})
 
 	emitter.on(`wat`, () => {
-		t.fail(`Should not be called because the first listener called stopPropagation`)
+		assert.fail(`Should not be called because the first listener called stopPropagation`)
 	})
 
 	emitter.emit(`wat`)
-
-	t.end()
 })
