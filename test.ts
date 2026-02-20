@@ -8,11 +8,11 @@ test(`Events work (in order)`, () => {
 	let firstFired = false
 
 	emitter.on(`Shouldn't happen`, () => assert.fail())
-	emitter.on(`wat`, a => {
+	emitter.on<string>(`wat`, (a) => {
 		assert.strictEqual(a, `arg1`)
 		firstFired = true
 	})
-	emitter.on(`wat`, a => {
+	emitter.on<string>(`wat`, (a) => {
 		assert.strictEqual(a, `arg1`)
 		assert.ok(firstFired)
 	})
@@ -122,8 +122,8 @@ test(`removeAllListeners`, () => {
 test(`stopPropagation`, () => {
 	const emitter = createEmitter()
 
-	emitter.on(`wat`, (_, { stopPropagation }) => {
-		stopPropagation()
+	emitter.on(`wat`, (_, context) => {
+		context?.stopPropagation()
 	})
 
 	emitter.on(`wat`, () => {
@@ -131,4 +131,65 @@ test(`stopPropagation`, () => {
 	})
 
 	emitter.emit(`wat`)
+})
+
+test(`Typed event map`, () => {
+	type Events = {
+		'user:login': { userId: number; username: string }
+		'user:logout': { userId: number }
+		'message': string
+		'tick': undefined
+	}
+
+	const emitter = createEmitter<Events>()
+
+	// Test: correctly typed event with object payload
+	emitter.on('user:login', (data, context) => {
+		assert.strictEqual(typeof data.userId, 'number')
+		assert.strictEqual(typeof data.username, 'string')
+		assert.strictEqual(typeof context.stopPropagation, 'function')
+	})
+
+	// Test: correctly typed event with string payload
+	let messageReceived = ''
+	emitter.on('message', (msg, context) => {
+		messageReceived = msg
+		assert.strictEqual(typeof msg, 'string')
+		assert.strictEqual(typeof context.stopPropagation, 'function')
+	})
+
+	// Test: event with undefined can be emitted without arg
+	let tickCount = 0
+	emitter.on('tick', (data, context) => {
+		tickCount++
+		assert.strictEqual(data, undefined)
+		assert.strictEqual(typeof context.stopPropagation, 'function')
+	})
+
+	// Emit events with correct types
+	emitter.emit('user:login', { userId: 123, username: 'alice' })
+	emitter.emit('message', 'hello world')
+	emitter.emit('tick') // no argument required for undefined events
+
+	assert.strictEqual(messageReceived, 'hello world')
+	assert.strictEqual(tickCount, 1)
+
+	// @ts-expect-error - wrong event name
+	emitter.on('nonexistent', () => {})
+
+	// Type errors that should be caught at compile time, which would fail at run time because of the assertions above
+	if (false as boolean) {
+
+		// @ts-expect-error - wrong argument type for 'message' (expects string)
+		emitter.emit('message', 123)
+
+		// @ts-expect-error - missing required properties in object
+		emitter.emit('user:login', { userId: 123 })
+
+		// @ts-expect-error - wrong property type
+		emitter.emit('user:login', { userId: 'abc', username: 'alice' })
+
+		// @ts-expect-error - cannot emit 'user:login' without argument
+		emitter.emit('user:login')
+	}
 })
