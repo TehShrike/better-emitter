@@ -1,8 +1,8 @@
-const keyMaster = require(`key-master`)
+import keyMaster from 'key-master'
 
 const freshMap = () => keyMaster(() => new Map())
 
-module.exports = function createEmitter(emitter = Object.create(null)) {
+export default function createEmitter(emitter = Object.create(null)) {
 	let eventsToListeners = freshMap()
 	let nextId = 0
 

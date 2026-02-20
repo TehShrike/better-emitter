@@ -13,14 +13,10 @@ npm i better-emitter
 ```
 
 ```
-const createEmitter = require('better-emitter')
+import createEmitter from 'better-emitter'
 ```
 
 # API
-
-<!--js
-const createEmitter = require('./')
--->
 
 ```js
 const emitter = createEmitter()

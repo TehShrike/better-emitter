@@ -1,6 +1,6 @@
-const test = require(`node:test`)
-const assert = require(`node:assert`)
-const createEmitter = require(`./`)
+import test from 'node:test'
+import assert from 'node:assert'
+import createEmitter from './index.js'
 
 test(`Events work (in order)`, () => {
 	const emitter = createEmitter()
