@@ -133,6 +133,38 @@ test(`stopPropagation`, () => {
 	emitter.emit(`wat`)
 })
 
+test(`Listeners can omit parameters they don't need`, () => {
+	type Events = {
+		'click': { x: number; y: number }
+		'message': string
+	}
+
+	const emitter = createEmitter<Events>()
+
+	// All of these should be valid:
+	let count = 0
+
+	// No parameters
+	emitter.on('click', () => { count++ })
+
+	// Only first parameter
+	emitter.on('click', (data) => {
+		assert.strictEqual(typeof data.x, 'number')
+		count++
+	})
+
+	// Both parameters
+	emitter.on('click', (data, context) => {
+		assert.strictEqual(typeof data.y, 'number')
+		assert.strictEqual(typeof context.stopPropagation, 'function')
+		count++
+	})
+
+	emitter.emit('click', { x: 10, y: 20 })
+
+	assert.strictEqual(count, 3)
+})
+
 test(`Typed event map`, () => {
 	type Events = {
 		'user:login': { userId: number; username: string }
