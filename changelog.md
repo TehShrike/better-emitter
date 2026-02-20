@@ -1,3 +1,7 @@
+# 4.0.1
+
+- only publish the js file and the type definition
+
 # 4.0.0
 
 - breaking: converted to ESM
