@@ -4,6 +4,10 @@
   "description": "A very simple event emitter with a better API than all the others",
   "type": "module",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "test": "run-s test:*",
     "test:types": "tsc --noEmit",
